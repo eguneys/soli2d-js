@@ -1,0 +1,10 @@
+node_modules/
+dist/
+lib/
+types/
+coverage/
+
+packages/soli2d-js/src/jsx.d.ts
+packages/soli2d-js/web/src/client.d.ts
+
+
