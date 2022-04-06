@@ -8,6 +8,7 @@
   "license": "MIT",
   "scripts": {
     "clean": "rimraf dist/ types/ coverage/ web/dist web/types/",
+    "watch": "jest --watch & rollup -cw",
     "build": "npm-run-all -cnl build:*",
     "build:link": "symlink-dir . node_modules/soli2d-js",
     "build:js": "ncp ../../node_modules/sol-expressions/src/jsx.d.ts ./src/jsx.d.ts && rollup -c",

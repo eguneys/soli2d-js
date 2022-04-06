@@ -10,7 +10,8 @@
     "clean:root": "rimraf node_modules",
     "test": "lerna run test --concurrency=1 --stream",
     "test:coverage": "lerna run test:coverage --parallel",
-    "build": "lerna run build --concurrency=1 --stream"
+    "build": "lerna run build --concurrency=1 --stream",
+    "watch": "lerna run --parallel watch"
   },
   "devDependencies": {
     "@babel/core": "^7.17.8",

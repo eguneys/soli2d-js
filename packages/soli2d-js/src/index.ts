@@ -1,4 +1,5 @@
 export {
   createRoot,
-  createSignal 
+  createSignal,
+  createRenderEffect
 } from './reactive/signal'

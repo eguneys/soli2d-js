@@ -13,8 +13,11 @@ describe("Basic element attributes", () => {
 
       setTimeout(() => {
         setS(7)
-        expect(transform.x).toBe(500)
-        done()
+        try {
+          expect(transform.x).toBe(500)
+        } finally {
+          done()
+        }
       })
     })
   })
