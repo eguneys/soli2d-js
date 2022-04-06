@@ -478,3 +478,47 @@ export function untrack<T>(fn: Accessor<T>) {
 
   return result
 }
+
+
+export function runUserEffects(queue: Computation<any>[]) {
+  let i,
+  userLength = 0
+  for (i = 0; i < queue.length; i++) {
+    const e = queue[i]
+    if (!e.user) {
+      runTop(e)
+    } else {
+      queue[userLength++] = e
+    }
+  }
+  const resume = queue.length
+  for (i = 0; i < userLength; i++) runTop(queue[i])
+  for (i = resume; i < queue.length; i++) runTop(queue[i])
+}
+
+
+export function on<S extends Accessor<unknown> | Accessor<unknown>[] | [], Next, init = unknown>(
+  deps: S,
+  fn: OnEffectFunction<S, Init | Next, Next>,
+  options?: OnOptions
+): EffectFunction<NoInfer<Init> | NoInfer<Next>, NoInfer<Next>> {
+  const isArray = Array.isArray(deps)
+  let prevInput: ReturnTypes<S>
+  return (prevValue: Init | Next) => {
+    let input: ReturnTypes<S>
+    let defer = options && options.defer
+    if (isArray) {
+      input = [] as TODO
+      for (let i = 0; i < deps.length; i++) (input as TODO[]).push((deps as Array<() => S>)[i]())
+    } else {
+      input = (deps as () => s)() as TODO
+    }
+    if (defer) {
+      defer = false
+      return undefined as unknown as Next
+    }
+    const result = untrack<Next>(() => fn(input, prevInput, prevValue))
+    prevInput = input
+    return result
+  }
+}

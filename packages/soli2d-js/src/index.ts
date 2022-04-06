@@ -2,9 +2,11 @@ export {
   createRoot,
   createMemo,
   createSignal,
+  createEffect,
   createRenderEffect,
   createContext,
-  useContext
+  useContext,
+  on
 } from './reactive/signal'
 
 
