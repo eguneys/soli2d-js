@@ -12,7 +12,7 @@
     "build": "npm-run-all -cnl build:*",
     "build:link": "symlink-dir . node_modules/soli2d-js",
     "build:js": "ncp ../../node_modules/sol-expressions/src/jsx.d.ts ./src/jsx.d.ts && rollup -c",
-    "test": "jest && yan run test:types",
+    "test": "jest && yarn run test:types",
     "test:coverage": "jest --coverage && yarn run test:types",
     "test:types": "tsc --project tsconfig.test.json"
   }

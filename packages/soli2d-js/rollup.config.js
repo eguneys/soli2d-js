@@ -19,7 +19,7 @@ const plugins = [
         'babel-plugin-transform-rename-import',
         {
           original: 'rxcore',
-          replacement: __dirname + 'web/src/core'
+          replacement: __dirname + '/web/src/core'
         }
       ]
     ]
@@ -36,7 +36,7 @@ export default [
   {
     input: 'src/index.ts',
     output: [{
-      file: 'dist/solid.js',
+      file: 'dist/soli2d.js',
       format: 'es'
     }],
     plugins: [

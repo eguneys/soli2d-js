@@ -96,6 +96,8 @@ export function createMemo<T>(
   value?: T,
   options?: { equals?: false | ((prev: T, next: T) => boolean); name?: string }
 ): Accessor<T> {
+
+  options = options ? Object.assign({}, signalOptions, options): signalOptions
   const c: Partial<Memo<T>> = createComputation<T>(
     fn,
     value,
@@ -402,4 +404,77 @@ function handleError(err: any) {
   const fns = ERROR && lookup(Owner, ERROR)
   if (!fns) throw err
   fns.forEach((f: (err: any) => void) => f(err))
+}
+
+
+
+export function createContext<T>(defaultValue?: T): Context<T | undefined> {
+
+  const id = Symbol('context')
+  return {id, Provider: createProvider(id), defaultValue }
+}
+
+
+export function useContext<T>(context: Context<T>): T {
+  let ctx
+  return (ctx = lookup(Owner, context.id)) !== undefined ? ctx : context.defaultValue
+}
+
+
+export function lookup(owner: Owner | null, key: symbol| string): any {
+  return owner
+  ? owner.context && owner.context[key] !== undefined
+    ? owner.context[key]
+    :lookup(owner.owner, key)
+  :undefined
+}
+
+
+function createProvider(id: symbol) {
+  return function provider(props: { value: unknown; children: JSX.Element }) {
+    let res
+    createComputed(
+      () =>
+      (res = untrack(() => {
+        Owner!.context = { [id]: props.value }
+        return children(() => props.children)
+      }))
+    )
+    return res as JSX.Element
+  }
+}
+
+export function children(fn: Accessor<JSX.Element>): Accessor<ResolvedChildren> {
+  const children = createMemo(fn)
+  return createMemo(() => resolveChildren(children()))
+}
+
+
+function resolveChildren(children: JSX.Element): ResolvedChildren {
+  if (typeof children === 'function' && !children.length) return resolveChildren(children())
+    if (Array.isArray(children)) {
+      const results: any[] = []
+      for (let i = 0; i < children.length; i++) {
+        const result = resolveChildren(children[i])
+        Array.isArray(result) ? reuslts.push.apply(results, result): results.push(result)
+      }
+      return results
+    }
+    return children as ResolvedChildren
+}
+
+export function createComputed<T>(fn: (v?: T) => T, value?: T, options?: { name?: string}): void {
+  updateComputation(createComputation(fn, value, true, undefined))
+}
+
+
+export function untrack<T>(fn: Accessor<T>) {
+  let result: T,
+  listener = Listener
+
+  Listener = null
+  result = fn()
+  Listener = listener
+
+  return result
 }

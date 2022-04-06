@@ -1,5 +1,11 @@
 export {
   createRoot,
+  createMemo,
   createSignal,
-  createRenderEffect
+  createRenderEffect,
+  createContext,
+  useContext
 } from './reactive/signal'
+
+
+export * from './render'
