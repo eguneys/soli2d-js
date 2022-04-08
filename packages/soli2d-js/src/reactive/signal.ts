@@ -522,3 +522,20 @@ export function on<S extends Accessor<unknown> | Accessor<unknown>[] | [], Next,
     return result
   }
 }
+
+
+function markDownstream(node: Memo<any>) {
+  for (let i = 0; i < node.observers!.length; i += 1) {
+    const o = node.observers![i]
+    
+    if (!o.state) {
+      o.state = PENDING
+      if (o.pure) {
+        Updates!.push(o)
+      } else {
+        Effects!.push(o)
+      }
+      (o as Memo<any>).observers && markDownstream(o as Memo<any>)
+    }
+  }
+}

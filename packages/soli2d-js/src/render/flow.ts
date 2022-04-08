@@ -9,3 +9,26 @@ export function For<T, U extends JSX.Element>(props: {
     mapArray<T, U>(() => props.each, props.children)
   )
 }
+
+
+export function Show<T>(props: {
+  when: T | undefined | null | false;
+  fallback?: JSX.Element;
+  children: JSX.Element | ((item: NonNullable<T>) => JSX.Element);
+}) {
+  let strictEqual = false
+  const condition = createMemo<T | undefined | null | boolean>(() => props.when, undefined, {
+    equals: (a, b) => (strictEqual ? a === b : !a === !b)
+  })
+
+  return createMemo(() => {
+    const c = condition()
+    if (c) {
+      const child = props.children
+      return (strictEqual = typeof child === 'function' && child.length > 0)
+        ? untrack(() => (child as any)(c as T))
+        : child
+    }
+    return props.fallback
+  }) as () => JSX.Element
+}

@@ -1,5 +1,6 @@
 export * from './client'
 
 export {
-  For
+  For,
+  Show
 } from 'soli2d-js'

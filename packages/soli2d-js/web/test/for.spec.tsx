@@ -21,20 +21,31 @@ describe("Testing an only child each control flow", () => {
       )
 
   test('create each control flow', () => {
-    let root = createRoot(dispose => <Component />)
+    root = createRoot(dispose => <Component />)
     expect(root._flat.length).toBe(5)
   })
 
-  const Tile = () => (<transform/>)
+  const Tile = (props: string) => (<transform name={props.name}/>)
 
-  const Component2 = () => (<transform>
-     <Tile/>
-     <For each={list()}>{ _ => <Tile/>}</For>
-     <Tile/>
-   </transform>)
+  const Component2 = () => (<>
+     <Tile name={'first'}/>
+     <For each={list()}>{ (_, i) =><Tile name={"infor"+i()}/>}</For>
+     <Tile name={'last'}/>
+   </>)
 
-  test.only('more elements', () => {
-    let root = createRoot(dispose => <Component2/>)
-    expect(root._flat.length).toBe(7)
+  test('more elements', () => {
+    root = createRoot(dispose => <transform><Component2/></transform>)
+    expect(root._flat.map(_ => _.name).join('')).toBe('firstinfor0infor1infor2infor3last')
   })
+
+
+  test('set list', () => {
+    root = createRoot(() => <transform><Component2/></transform>)
+
+    setList([1])
+
+    expect(root._flat.length).toBe(4)
+    expect(root._flat.map(_ => _.name).join('')).toBe('firstinfor0last')
+  })
+
 })

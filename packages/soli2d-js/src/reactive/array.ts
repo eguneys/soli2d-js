@@ -1,4 +1,4 @@
-import { untrack, createRoot } from './signal'
+import { createSignal, untrack, createRoot } from './signal'
 
 export function mapArray<T, U>(
   list: Accessor<readonly T[] | undefined | null | false>,
