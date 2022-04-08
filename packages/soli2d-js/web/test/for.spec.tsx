@@ -25,7 +25,7 @@ describe("Testing an only child each control flow", () => {
     expect(root._flat.length).toBe(5)
   })
 
-  const Tile = (props: string) => (<transform name={props.name}/>)
+  const Tile = (props: string) => (<transform name={props.name} x={props.x}/>)
 
   const Component2 = () => (<>
      <Tile name={'first'}/>
@@ -46,6 +46,45 @@ describe("Testing an only child each control flow", () => {
 
     expect(root._flat.length).toBe(4)
     expect(root._flat.map(_ => _.name).join('')).toBe('firstinfor0last')
+  })
+
+  test('empty list', () => {
+    root = createRoot(() => <transform><Component2/></transform>)
+
+    setList([])
+    
+    expect(root._flat.length).toBe(3)
+  })
+
+  const [x, setX] = createSignal(0)
+  
+  const Game = () => (<>
+      <Tile name={'first'}/>
+      <ParentBox/>
+      <Tile name={'last'} x={x()}/>
+      </>)
+
+  const ParentBox = () => (<>
+     <transform>
+       <Tile/>
+     </transform>
+     <For each={list()}>{(_, i) => 
+       <For each={list()}>{(_, i) => 
+         <Tile/>
+       }</For>
+     }</For>
+   </>)
+
+  test('double for', () => {
+
+    root = createRoot(() => <transform><Game/></transform>)
+    
+    setList([1,2,3,4])
+
+    expect(root._flat.length).toBe(21)
+    expect(root._flat.find(_ => _.name === 'last').x).toBe(0)
+    setX(7)
+    expect(root._flat.find(_ => _.name === 'last').x).toBe(7)
   })
 
 })

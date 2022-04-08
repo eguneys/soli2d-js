@@ -15,6 +15,10 @@ module.exports = {
                 replacement: __dirname + "/web/src/core"
               },
               {
+                original: 'ex/soli2d',
+                replacement: __dirname + "/web/src/soli2d"
+              },
+              {
                 original: "^soli2d-js$",
                 replacement: "../../src"
               }

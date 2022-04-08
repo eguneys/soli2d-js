@@ -1,5 +1,11 @@
 import { createSignal, untrack, createRoot } from './signal'
 
+const FALLBACK = Symbol('fallback')
+export function dispose(d: (() => void)[]) {
+  for (let i = 0; i < d.length; i++) d[i]()
+}
+
+
 export function mapArray<T, U>(
   list: Accessor<readonly T[] | undefined | null | false>,
   mapFn: (v: T, i: Accessor<number>) => U,

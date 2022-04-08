@@ -6,6 +6,14 @@
   "sideEffects": false,
   "type": "module",
   "license": "MIT",
+  "exports": {
+    ".": {
+      "import": "./dist/soli2d.js"
+    },
+    "./web": {
+      "import": "./web/dist/web.js"
+    }
+  },
   "scripts": {
     "clean": "rimraf dist/ types/ coverage/ web/dist web/types/",
     "watch": "jest --watch & rollup -cw",

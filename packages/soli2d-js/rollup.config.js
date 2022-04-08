@@ -18,8 +18,13 @@ const plugins = [
       [
         'babel-plugin-transform-rename-import',
         {
-          original: 'rxcore',
-          replacement: __dirname + '/web/src/core'
+          replacements: [{
+            original: 'rxcore',
+            replacement: __dirname + '/web/src/core'
+          }, {
+            original: 'ex/soli2d',
+            replacement: __dirname + '/web/src/soli2d'
+          }]
         }
       ]
     ]

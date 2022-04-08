@@ -1,4 +1,5 @@
 export * from './client'
+export * from './soli2d'
 
 export {
   For,
