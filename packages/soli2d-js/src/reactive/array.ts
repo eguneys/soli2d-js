@@ -17,7 +17,7 @@ export function mapArray<T, U>(
     len = 0,
     indexes: ((v: number) => number)[] | null = mapFn.length > 1 ? [] : null
 
-  //onCleanup(() => dispose(disopsers))
+  //onCleanup(() => dispose(disposers))
   return () => {
     let newItems = list() || [],
       i: number,

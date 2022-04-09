@@ -57,34 +57,60 @@ describe("Testing an only child each control flow", () => {
   })
 
   const [x, setX] = createSignal(0)
-  
-  const Game = () => (<>
-      <Tile name={'first'}/>
-      <ParentBox/>
-      <Tile name={'last'} x={x()}/>
-      </>)
-
-  const ParentBox = () => (<>
-     <transform>
-       <Tile/>
-     </transform>
-     <For each={list()}>{(_, i) => 
-       <For each={list()}>{(_, i) => 
-         <Tile/>
-       }</For>
-     }</For>
-   </>)
 
   test('double for', () => {
 
+    const Game = () => (<>
+        <Tile name={'first'}/>
+        <ParentBox list={list()}/>
+        <Tile name={'last'} x={x()}/>
+        </>)
+  
+    const ParentBox = (props) => (<>
+       <transform>
+         <Tile/>
+       </transform>
+       <For each={props.list}>{(_, i) => 
+         <For each={props.list}>{(_, i) => 
+           <Tile name={'dfor'+_}/>
+         }</For>
+       }</For>
+     </>)
+  
+
     root = createRoot(() => <transform><Game/></transform>)
     
-    setList([1,2,3,4])
+    setList([1])
+    setList([1])
 
-    expect(root._flat.length).toBe(21)
+    expect(root._flat.length).toBe(6)
     expect(root._flat.find(_ => _.name === 'last').x).toBe(0)
     setX(7)
     expect(root._flat.find(_ => _.name === 'last').x).toBe(7)
+  })
+
+
+  test('for update', () => {
+
+    let Comp = () => (<transform>
+       <Tile name={"side"}/>
+       <For each={list()}>{(_, i) => 
+         <Tile name={'dfor'+ i()} x={_.x}/>
+       }</For>
+        </transform>)
+
+     
+    setList([{x: 0}])
+    root = createRoot(() => <transform><Comp/></transform>)
+
+    setList([{x: 7}])
+
+    expect(root._flat.find(_ => _.name === 'dfor0').x).toBe(7)
+
+    setList([{x: 6}])
+    expect(root._flat.find(_ => _.name === 'dfor0').x).toBe(6)
+
+    expect(root._flat.length).toBe(4)
   })
 
 })
