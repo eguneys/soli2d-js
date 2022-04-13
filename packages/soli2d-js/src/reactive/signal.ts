@@ -456,7 +456,7 @@ function resolveChildren(children: JSX.Element): ResolvedChildren {
       const results: any[] = []
       for (let i = 0; i < children.length; i++) {
         const result = resolveChildren(children[i])
-        Array.isArray(result) ? reuslts.push.apply(results, result): results.push(result)
+        Array.isArray(result) ? results.push.apply(results, result): results.push(result)
       }
       return results
     }

@@ -6,7 +6,8 @@ export {
   createRenderEffect,
   createContext,
   useContext,
-  on
+  on,
+  batch
 } from './reactive/signal'
 
 
