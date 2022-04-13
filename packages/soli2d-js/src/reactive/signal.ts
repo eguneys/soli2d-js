@@ -120,7 +120,9 @@ export function readSignal(this: SignalState<any> | Memo<any>) {
   if ((this as Memo<any>).sources &&
       ((this as Memo<any>).state)) {
     const updates = Updates
-  Updates = null
+
+  Updates = null;
+
   ((this as Memo<any>).state === STALE) ? updateComputation(this as Memo<any>)
   : lookUpstream(this as Memo<any>)
   Updates = updates
