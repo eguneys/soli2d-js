@@ -1,4 +1,4 @@
-import { createSignal, untrack, createRoot } from './signal'
+import { onCleanup, createSignal, untrack, createRoot } from './signal'
 
 const FALLBACK = Symbol('fallback')
 export function dispose(d: (() => void)[]) {
@@ -17,7 +17,7 @@ export function mapArray<T, U>(
     len = 0,
     indexes: ((v: number) => number)[] | null = mapFn.length > 1 ? [] : null
 
-  //onCleanup(() => dispose(disposers))
+  onCleanup(() => dispose(disposers))
   return () => {
     let newItems = list() || [],
       i: number,

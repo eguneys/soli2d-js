@@ -541,3 +541,14 @@ function markDownstream(node: Memo<any>) {
     }
   }
 }
+
+
+export function onCleanup(fn: () => void) {
+  if (Owner === null) {
+  } else if(Owner.cleanups === null) { 
+    Owner.cleanups = [fn] 
+  } else { 
+    Owner.cleanups.push(fn) 
+  }
+  return fn
+}
