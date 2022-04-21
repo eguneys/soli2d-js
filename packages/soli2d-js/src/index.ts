@@ -7,6 +7,8 @@ export {
   createContext,
   useContext,
   on,
+  onMount,
+  onCleanup,
   batch
 } from './reactive/signal'
 

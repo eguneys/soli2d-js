@@ -552,3 +552,8 @@ export function onCleanup(fn: () => void) {
   }
   return fn
 }
+
+
+export function onMount(fn: () => void) {
+  createEffect(() => untrack(fn))
+}
