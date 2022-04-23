@@ -9,7 +9,8 @@ export {
   on,
   onMount,
   onCleanup,
-  batch
+  batch,
+  untrack
 } from './reactive/signal'
 
 
