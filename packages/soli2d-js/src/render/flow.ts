@@ -23,7 +23,7 @@ export function Show<T>(props: {
 
   return createMemo(() => {
     const c = condition()
-    if (c) {
+    if (c === 0 || !!c) {
       const child = props.children
       return (strictEqual = typeof child === 'function' && child.length > 0)
         ? untrack(() => (child as any)(c as T))
