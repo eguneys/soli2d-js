@@ -110,7 +110,7 @@ describe("Testing an only child each control flow", () => {
     setList([{x: 6}])
     expect(root._flat.find(_ => _.name === 'dfor0').x).toBe(6)
 
-    expect(root._flat.length).toBe(3)
+    expect(root._flat.length).toBe(4)
   })
 
 })

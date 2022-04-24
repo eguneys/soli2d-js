@@ -25,7 +25,7 @@ describe("Testing an only child show control flow", () => {
   })
 
 
-  test.only('show inside for', () => {
+  test('show inside for', () => {
       root = createRoot(dispose => <transform>
           <For each={[1,2,3]}>{ item =>
             <Component/>
@@ -38,4 +38,33 @@ describe("Testing an only child show control flow", () => {
   expect(root._flat.length).toBe(4)
 
       })
+
+
+  test.only('show contains fragment', () => {
+
+    const RevealCard = () => (<>
+       <transform></transform>
+     </>)
+
+    root = createRoot(dispose => (<transform>
+          <For each={[1]}>{item=>
+          <transform>
+          <Show when={count()<5}
+  fallback={<RevealCard/>} >
+            <>
+         <RevealCard/>
+         <RevealCard/>
+            </>
+          </Show>
+          </transform>
+          }</For>
+      </transform>))
+
+    setCount(7)
+    expect(root._flat.length).toBe(3)
+    setCount(0)
+    expect(root._flat.length).toBe(4)
+    setCount(7)
+    expect(root._flat.length).toBe(3)
+  })
 })
