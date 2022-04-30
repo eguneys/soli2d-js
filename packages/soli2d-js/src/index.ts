@@ -10,7 +10,9 @@ export {
   onMount,
   onCleanup,
   batch,
-  untrack
+  untrack,
+  getOwner,
+  runWithOwner
 } from './reactive/signal'
 
 

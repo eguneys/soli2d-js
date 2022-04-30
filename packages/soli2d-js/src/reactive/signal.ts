@@ -557,3 +557,17 @@ export function onCleanup(fn: () => void) {
 export function onMount(fn: () => void) {
   createEffect(() => untrack(fn))
 }
+
+export function getOwner() {
+  return Owner
+}
+
+export function runWithOwner<T>(o: Owner, fn: () => T): T {
+  const prev = Owner
+  Owner = o
+  try {
+    return runUpdates(fn, true)!
+  } finally {
+    Owner = prev
+  }
+}
