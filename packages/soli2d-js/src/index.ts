@@ -15,5 +15,8 @@ export {
   runWithOwner
 } from './reactive/signal'
 
+export {
+  mapArray
+} from './reactive/array'
 
 export * from './render'
